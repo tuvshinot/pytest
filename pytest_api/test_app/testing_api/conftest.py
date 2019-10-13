@@ -1,9 +1,12 @@
 import pytest
 import requests
 import os
+from .test_test_session import TestClassHasSessionMessage
+
 
 fileDir = os.path.dirname(os.path.realpath('__file__'))
 base_url = 'http://localhost:8081/api'
+
 
 @pytest.fixture(scope='session')
 def supply_base_url():
@@ -32,6 +35,22 @@ def clean_up(filename, url):
 
 def clean_up_request(url):
     """ Delete request to server to clean up """
-    url_req =  base_url + url
+    url_req = base_url + url
     headers = {'Content-Type': 'application/json'}
     requests.delete(url_req, headers=headers)
+
+
+@pytest.fixture(scope='session')
+def set_message_to_session(request):
+    session = request.node
+
+    def say_hello(self): # self is TestClassHasSessionMessage
+        return 'Hello ' + self.name
+
+    for item in session.items:
+        cls = item.getparent(pytest.Class)
+        print('\n----------------------')
+        if cls.cls is TestClassHasSessionMessage:
+            cls.cls.isCool = False
+        cls.cls.name = 'Hey'
+        cls.cls.say_hello = say_hello
