@@ -39,10 +39,12 @@ def clean_up_request(url):
     headers = {'Content-Type': 'application/json'}
     requests.delete(url_req, headers=headers)
 
-
 @pytest.fixture(scope='session')
 def set_message_to_session(request):
     session = request.node
+    print('---------------------------------')
+    print(dir(request.config.option))
+    print('---------------------------------')
 
     def say_hello(self): # self is TestClassHasSessionMessage
         return 'Hello ' + self.name
@@ -54,3 +56,4 @@ def set_message_to_session(request):
             cls.cls.isCool = False
         cls.cls.name = 'Hey'
         cls.cls.say_hello = say_hello
+
