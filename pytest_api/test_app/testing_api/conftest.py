@@ -10,7 +10,7 @@ base_url = 'http://localhost:8081/api'
 
 @pytest.fixture(scope='session')
 def supply_base_url():
-    """ Supplying  """
+    """ Supplying  base"""
     return base_url
 
 
